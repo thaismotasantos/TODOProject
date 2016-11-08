@@ -26,7 +26,7 @@ public class TasksMBean implements Serializable {
     @EJB
     private TasksManager tm;
     private List<Task> tasksList = new ArrayList();
-    private String message;    
+    private String message;
     private LazyDataModel<Task> tasksModel;
     private int taskId;
 

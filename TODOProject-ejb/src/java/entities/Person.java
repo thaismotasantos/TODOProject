@@ -14,14 +14,16 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
 
 /**
  *
  * @author thais
  */
 @Entity
+@NamedQueries({@NamedQuery(name = "Person.findAll", query = "SELECT p FROM Person p")})
 public class Person implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -29,9 +31,18 @@ public class Person implements Serializable {
     private int id;
     private String firstName;
     private String lastName;
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch=FetchType.EAGER)
+    @OneToMany(cascade=CascadeType.PERSIST, fetch=FetchType.EAGER)
     //@OrderBy("creationDate ASC")
     List<Task> tasksList = new ArrayList<Task>();
+
+    public Person() {
+    }
+
+    public Person(String firstName, String lastName, List<Task> tasksList) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.tasksList = tasksList;
+    }
 
     public int getId() {
         return id;
