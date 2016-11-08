@@ -29,18 +29,21 @@ public class Task implements Serializable {
     private int id;
     private String name;
     private Person assignedPerson;
-    private ETaskStatus status;
+    private String status;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date creationDate;
+    private String description;
 
     public Task() {
         
     }
 
-    public Task(String name, Person assignedPerson, ETaskStatus status) {
+    public Task(String name, Person assignedPerson, String status, String description) {
         this.name = name;
         this.assignedPerson = assignedPerson;
         this.status = status;
+        this.description = description;
+        this.creationDate = new Date();
     }
     
     public int getId() {
@@ -67,11 +70,11 @@ public class Task implements Serializable {
         this.assignedPerson = assignedPerson;
     }
 
-    public ETaskStatus getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(ETaskStatus status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
@@ -83,6 +86,14 @@ public class Task implements Serializable {
         this.creationDate = creationDate;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;

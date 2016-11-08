@@ -14,18 +14,22 @@ public enum ETaskStatus {
     IN_PROGRESS ("In progress"),
     COMPLETED ("Completed");
     
-    private final String name;       
+    public final String status;       
 
     private ETaskStatus(String s) {
-        name = s;
+        status = s;
     }    
 
+    public String getStatus() {
+        return status;
+    }
+
     public boolean equalsName(String otherName) {
-        return (otherName == null) ? false : name.equals(otherName);
+        return (otherName == null) ? false : status.equals(otherName);
     }
     
     @Override
     public String toString() {
-       return this.name;
+       return this.status;
     }
 }

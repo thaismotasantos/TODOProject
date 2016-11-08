@@ -24,10 +24,11 @@ import org.primefaces.model.LazyDataModel;
 @ViewScoped
 public class TasksMBean implements Serializable {
     @EJB
-    private TasksManager tasksManager;
+    private TasksManager tm;
     private List<Task> tasksList = new ArrayList();
     private String message;    
     private LazyDataModel<Task> tasksModel;
+    private int taskId;
 
     /**
      * Creates a new instance of TasksMBean
@@ -37,7 +38,50 @@ public class TasksMBean implements Serializable {
     
     @PostConstruct
     public void init() {
-        this.tasksList = tasksManager.getAllTasks();
+        this.tasksList = tm.getAllTasks();
+    }
+
+    public List<Task> getTasksList() {
+        return tasksList;
+    }
+
+    public void setTasksList(List<Task> tasksList) {
+        this.tasksList = tasksList;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public LazyDataModel<Task> getTasksModel() {
+        return tasksModel;
+    }
+
+    public void setTasksModel(LazyDataModel<Task> tasksModel) {
+        this.tasksModel = tasksModel;
+    }
+
+    public int getTaskId() {
+        return taskId;
+    }
+
+    public void setTaskId(int taskId) {
+        this.taskId = taskId;
     }
     
+    public String deleteTask(Task t) {
+        int deletedTaskId = tm.delete(t);
+        if (deletedTaskId != 0) {
+            System.out.println("Task " + deletedTaskId + " deleted.");
+            message = "Task " + deletedTaskId + " deleted.";
+        } else {
+            System.out.println("Unable to find task " + deletedTaskId);
+            message = "Unable to find task " + deletedTaskId;
+        }
+        return "index?faces-redirect=true";
+    }
 }
