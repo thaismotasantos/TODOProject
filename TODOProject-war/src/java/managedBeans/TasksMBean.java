@@ -76,4 +76,8 @@ public class TasksMBean implements Serializable {
         }
         return "index?faces-redirect=true";
     }
+    
+    public String showPeopleList() {
+        return "PeopleList?amp;faces-redirect=true";
+    }
 }

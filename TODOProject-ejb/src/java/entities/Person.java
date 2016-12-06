@@ -23,7 +23,7 @@ import javax.persistence.OneToMany;
  * @author thais
  */
 @Entity
-@NamedQueries({@NamedQuery(name = "Person.findAll", query = "SELECT p FROM Person p")})
+@NamedQueries({@NamedQuery(name = "Person.findAll", query = "SELECT p FROM Person p order by p.id")})
 public class Person implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id

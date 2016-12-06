@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <f:metadata>  
+        <f:viewParam name="id" value="#{addPersonMBean.personId}"  
+                     required="true"/>  
+        <f:viewAction action="#{addPersonMBean.loadPerson()}"/>  
+    </f:metadata>
+    <body>
+
+        <ui:composition template="./resources/defaultTemplate.xhtml">
+
+            <ui:define name="top">
+                top
+            </ui:define>
+
+            <ui:define name="left">
+                <h:form>
+                    <h:commandButton action="#{tasksMBean.showPeopleList()}"
+                                     value="Show people list"/>            
+                </h:form>
+                <h:form>
+                    <h:commandButton action="#{peopleMBean.addPerson()}"
+                                     value="Add person"/>            
+                </h:form>
+            </ui:define>
+
+            <ui:define name="content">
+                <f:view>
+                    <h:form>
+                        <h1><h:outputText value="Create/Edit"/></h1>
+                        <h:panelGrid columns="2">
+                            <h:outputLabel value="Person id:" for="personId" />
+                            <h:inputText id="personId" value="#{addPersonMBean.person.id}" title="Person id" required="true" requiredMessage="The id field is required."/>
+                            <h:outputLabel value="First name:" for="firstName" />
+                            <h:inputText id="firstName" value="#{addPersonMBean.person.firstName}" title="First name" required="true" requiredMessage="The first name field is required."/>
+                            <h:outputLabel value="Last name:" for="lastName" />
+                            <h:inputText id="lastName" value="#{addPersonMBean.person.lastName}" title="Last name" required="true" requiredMessage="The last name field is required."/>
+                        </h:panelGrid>
+                        <h:commandButton id="back" value="Back" action="#{addPersonMBean.list}"/>  
+                        <h:commandButton id="save" value="Save" action="#{addPersonMBean.save}"/>       
+                    </h:form>
+                </f:view>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

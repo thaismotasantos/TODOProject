@@ -17,6 +17,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import managers.PeopleManager;
+import org.primefaces.event.RowEditEvent;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 
@@ -32,6 +33,7 @@ public class PeopleMBean implements Serializable {
     private List<Person> peopleList = new ArrayList();
     private String message;
     private LazyDataModel<Person> peopleModel;
+    private Person selectedPerson;
     
     /**
      * Creates a new instance of PeopleMBean
@@ -40,7 +42,7 @@ public class PeopleMBean implements Serializable {
         peopleModel = new LazyDataModel<Person>() {
             @Override
             public List<Person> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
-                return peopleManager.findRange(first, pageSize, sortField, sortOrder.toString());
+                return peopleManager.findRange(first, pageSize, sortField, sortOrder.toString(), filters);
             }
 
             @Override
@@ -63,22 +65,55 @@ public class PeopleMBean implements Serializable {
     }
     
     public void refreshCache(){
-         peopleList = peopleManager.getAllPeople();
+         this.peopleList = peopleManager.getAllPeople();
     }
     
-    public String showPerson(int id) {  
-        return "ShowPerson?id=" + id + "&amp;faces-redirect=true";
-    }
+    /*public String showPerson(int id) {  
+        return "AddPerson?id=" + id + "&amp;faces-redirect=true";
+    }*/
     
     public String editPerson(int id) {  
-        return "EditPerson?id=" + id + "&amp;faces-redirect=true";
+        return "AddPerson?id=" + id + "&amp;faces-redirect=true";
+    }
+    
+    public String editPerson() {  
+        int id = selectedPerson.getId();
+        return "AddPerson?id=" + id + "&amp;faces-redirect=true";
+    }
+    
+    public void onEdit(RowEditEvent event) {
+        System.out.println("entrou AQUI ON EDIT");
+        try {
+            Person person = (Person)event.getObject();
+            peopleManager.update(person);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
     
     public void deletePerson(Person p) {
         peopleManager.delete(p);
-        FacesContext context = FacesContext.getCurrentInstance();
+        
+        addMessage("Successful", "Person deleted");
+        /*FacesContext context = FacesContext.getCurrentInstance();
         message = "Person deleted";
-        context.addMessage(null, new FacesMessage("Successful", message));
+        context.addMessage(null, new FacesMessage("Successful", message));*/
+    }
+    
+    public void deletePerson() {
+        peopleManager.delete(selectedPerson);
+        selectedPerson = null;
+        
+        addMessage("Successful", "Person deleted");
+    }
+    
+    public String addPerson() {
+        return "AddPerson?amp;faces-redirect=true";
+    }     
+    
+    public void addMessage(String summary, String detail) {
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, detail);
+        FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
     public List<Person> getPeopleList() {
@@ -102,6 +137,14 @@ public class PeopleMBean implements Serializable {
 
     public void setPeopleModel(LazyDataModel<Person> peopleModel) {
         this.peopleModel = peopleModel;
+    }
+
+    public Person getSelectedPerson() {
+        return selectedPerson;
+    }
+
+    public void setSelectedPerson(Person selectedPerson) {
+        this.selectedPerson = selectedPerson;
     }
     
 }

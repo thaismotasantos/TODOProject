@@ -15,7 +15,14 @@
             </ui:define>
 
             <ui:define name="left">
-                left
+                <h:form>
+                    <h:commandButton action="#{tasksMBean.showPeopleList()}"
+                                     value="Show people list"/>            
+                </h:form>
+                <h:form>
+                    <h:commandButton action="#{peopleMBean.addPerson()}"
+                                     value="Add person"/>            
+                </h:form>
             </ui:define>
 
             <ui:define name="content">
