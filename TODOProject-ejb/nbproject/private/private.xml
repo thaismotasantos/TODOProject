@@ -6,6 +6,9 @@
             <file>file:/C:/Users/thais/Documents/NetBeansProjects/TODOProject/TODOProject-ejb/src/java/entities/Person.java</file>
             <file>file:/C:/Users/thais/Documents/NetBeansProjects/TODOProject/TODOProject-ejb/src/java/managers/PeopleManager.java</file>
         </group>
-        <group name="French Chic"/>
+        <group name="French Chic">
+            <file>file:/C:/Users/cojoc/DEV/NetBeansProjects/TODOProject/TODOProject-ejb/src/java/managers/TasksManager.java</file>
+            <file>file:/C:/Users/cojoc/DEV/NetBeansProjects/TODOProject/TODOProject-ejb/src/java/utils/InitDB.java</file>
+        </group>
     </open-files>
 </project-private>

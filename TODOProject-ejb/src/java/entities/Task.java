@@ -29,7 +29,7 @@ public class Task implements Serializable {
     private int id;
     private String name;
     private Person assignedPerson;
-    private String status;
+    private ETaskStatus status;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date creationDate;
     private String description;
@@ -38,7 +38,7 @@ public class Task implements Serializable {
         
     }
 
-    public Task(String name, Person assignedPerson, String status, String description) {
+    public Task(String name, Person assignedPerson, ETaskStatus status, String description) {
         this.name = name;
         this.assignedPerson = assignedPerson;
         this.status = status;
@@ -70,11 +70,11 @@ public class Task implements Serializable {
         this.assignedPerson = assignedPerson;
     }
 
-    public String getStatus() {
+    public ETaskStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(ETaskStatus status) {
         this.status = status;
     }
 

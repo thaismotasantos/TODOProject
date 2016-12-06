@@ -28,7 +28,6 @@ public class TasksMBean implements Serializable {
     private List<Task> tasksList = new ArrayList();
     private String message;
     private LazyDataModel<Task> tasksModel;
-    private int taskId;
 
     /**
      * Creates a new instance of TasksMBean
@@ -64,17 +63,10 @@ public class TasksMBean implements Serializable {
     public void setTasksModel(LazyDataModel<Task> tasksModel) {
         this.tasksModel = tasksModel;
     }
-
-    public int getTaskId() {
-        return taskId;
-    }
-
-    public void setTaskId(int taskId) {
-        this.taskId = taskId;
-    }
     
     public String deleteTask(Task t) {
         int deletedTaskId = tm.delete(t);
+        this.tasksList = tm.getAllTasks();
         if (deletedTaskId != 0) {
             System.out.println("Task " + deletedTaskId + " deleted.");
             message = "Task " + deletedTaskId + " deleted.";

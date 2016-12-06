@@ -28,23 +28,27 @@ public class TasksManager {
     @PersistenceContext(unitName = "TODOProject-ejbPU")
     private EntityManager em;
     
-    public void createTask(String name, Person assignedPerson, String status, String description) {
+    public void createTask(String name, Person assignedPerson, ETaskStatus status, String description) {
         Task task = new Task(name, assignedPerson, status, description);
         persist(task);
     }
     
     public void createTestTasks() {
-        createTask("Corriger bug XYZ", null, ETaskStatus.NOT_ASSIGNED.name(), "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse felis justo, euismod eget tincidunt faucibus, venenatis nec arcu. Suspendisse potenti.");
-        createTask("Implémtenter fonction X", null, ETaskStatus.IN_PROGRESS.name(), "Sed nibh enim, varius vel dictum eget, auctor id ante. Nunc diam felis, euismod vel gravida vel, euismod vel augue. ");
-        createTask("Finir test ZZZ", null, ETaskStatus.COMPLETED.name(), "Curabitur pulvinar, metus pretium mattis lacinia, ligula elit condimentum neque, sed pharetra mi magna euismod purus.");
-        createTask("Tache bla bla", null, ETaskStatus.NOT_ASSIGNED.name(), "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse felis justo, euismod eget tincidunt faucibus, venenatis nec arcu. Suspendisse potenti.");
-        createTask("Test unitaire 9999", null, ETaskStatus.COMPLETED.name(), "Sed nibh enim, varius vel dictum eget, auctor id ante. Nunc diam felis, euismod vel gravida vel, euismod vel augue. ");
-        createTask("CRUD Entité", null, ETaskStatus.COMPLETED.name(), "Curabitur pulvinar, metus pretium mattis lacinia, ligula elit condimentum neque, sed pharetra mi magna euismod purus.");
+        createTask("Corriger bug XYZ", null, ETaskStatus.NOT_ASSIGNED, "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse felis justo, euismod eget tincidunt faucibus, venenatis nec arcu. Suspendisse potenti.");
+        createTask("Implémtenter fonction X", null, ETaskStatus.IN_PROGRESS, "Sed nibh enim, varius vel dictum eget, auctor id ante. Nunc diam felis, euismod vel gravida vel, euismod vel augue. ");
+        createTask("Finir test ZZZ", null, ETaskStatus.COMPLETED, "Curabitur pulvinar, metus pretium mattis lacinia, ligula elit condimentum neque, sed pharetra mi magna euismod purus.");
+        createTask("Tache bla bla", null, ETaskStatus.NOT_ASSIGNED, "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse felis justo, euismod eget tincidunt faucibus, venenatis nec arcu. Suspendisse potenti.");
+        createTask("Test unitaire 9999", null, ETaskStatus.COMPLETED, "Sed nibh enim, varius vel dictum eget, auctor id ante. Nunc diam felis, euismod vel gravida vel, euismod vel augue. ");
+        createTask("CRUD Entité", null, ETaskStatus.COMPLETED, "Curabitur pulvinar, metus pretium mattis lacinia, ligula elit condimentum neque, sed pharetra mi magna euismod purus.");
     }
     
     public List<Task> getAllTasks() {
         Query query = em.createNamedQuery("Task.findAll");  
         return query.getResultList();  
+    }
+    
+    public Task getTask(int taskId) {
+        return em.find(Task.class, taskId);
     }
     
     public int delete(Task t) {

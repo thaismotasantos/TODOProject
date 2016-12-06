@@ -22,7 +22,7 @@
                 <f:view>
                     <h:form>
                         <h1><h:outputText value="List"/></h1>
-                        <p:dataTable value="#{tasksMBean.tasksList}" var="item">
+                        <p:dataTable id="taskListId" value="#{tasksMBean.tasksList}" var="item">
                             <p:column sortBy="#{item.id}">
                                 <f:facet name="header">
                                     <h:outputText value="Id"/>
@@ -41,11 +41,11 @@
                                 </f:facet>
                                 <h:outputText value="#{item.assignedPerson}"/>
                             </p:column>
-                            <p:column sortBy="#{item.status}">
+                            <p:column sortBy="#{item.status.message}">
                                 <f:facet name="header">
                                     <h:outputText value="Status"/>
                                 </f:facet>
-                                <h:outputText value="#{item.status}"/>
+                                <h:outputText value="#{item.status.message}" style="color: #{item.status.color};"/>
                             </p:column>
                             <p:column sortBy="#{item.creationDate}">
                                 <f:facet name="header">
@@ -62,9 +62,7 @@
                                 <h:outputText value="#{item.description}" />
                             </p:column>
                             <p:column>
-                                <h:form>
-                                    <p:commandButton action="#{tasksMBean.deleteTask(item)}" value="Delete"/>
-                                </h:form>
+                                <p:commandButton value="Delete" actionListener="#{tasksMBean.deleteTask(item)}" update="taskListId"></p:commandButton>
                             </p:column>
                         </p:dataTable>
                     </h:form>
