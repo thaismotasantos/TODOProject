@@ -4,17 +4,8 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group name="French Chic"/>
         <group>
-            <file>file:/C:/Users/thais/Documents/NetBeansProjects/TODOProject/TODOProject-ejb/src/java/entities/Task.java</file>
-            <file>file:/C:/Users/thais/Documents/NetBeansProjects/TODOProject/TODOProject-ejb/src/java/entities/Person.java</file>
             <file>file:/C:/Users/thais/Documents/NetBeansProjects/TODOProject/TODOProject-ejb/src/java/utils/InitDB.java</file>
             <file>file:/C:/Users/thais/Documents/NetBeansProjects/TODOProject/TODOProject-ejb/src/java/managers/PeopleManager.java</file>
         </group>
-<<<<<<< HEAD
-        <group name="French Chic">
-            <file>file:/C:/Users/cojoc/DEV/NetBeansProjects/TODOProject/TODOProject-ejb/src/java/managers/TasksManager.java</file>
-            <file>file:/C:/Users/cojoc/DEV/NetBeansProjects/TODOProject/TODOProject-ejb/src/java/utils/InitDB.java</file>
-        </group>
-=======
->>>>>>> implementation people
     </open-files>
 </project-private>

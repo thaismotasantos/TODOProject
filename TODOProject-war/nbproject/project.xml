@@ -15,11 +15,7 @@
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
-<<<<<<< HEAD
-                    <file>${libs.CDI.classpath}</file>
-=======
                     <file>${libs.cdi.classpath}</file>
->>>>>>> implementation people
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
             </web-module-libraries>
