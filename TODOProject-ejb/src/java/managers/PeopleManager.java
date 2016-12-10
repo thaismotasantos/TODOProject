@@ -8,7 +8,6 @@ package managers;
 import entities.Person;
 import entities.Task;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -35,10 +34,22 @@ public class PeopleManager {
         if(tasksList == null) {
             tasksList = new ArrayList<Task>();
         }
-        persist(new Person(firstName, lastName, tasksList));
+        Person person = new Person(firstName, lastName);
+        for(Task t : tasksList) {
+            t.setAssignedPerson(person);
+        }
+        person.setTasksList(tasksList);
+        persist(person);
     }
     
-    public void createPerson(Person person) {
+    public void createPerson(Person person, List<Task> tasks) {
+        List l = new ArrayList<Task>();
+        for(Task t : tasks) {
+            t = tasksManager.getTask(t.getId());
+            t.setAssignedPerson(person);
+            l.add(t);
+        }
+        person.setTasksList(l);
         persist(person);
     }
     
@@ -52,7 +63,7 @@ public class PeopleManager {
         if(filters != null && !filters.isEmpty()) {
             query += " where";
             boolean isFirstFilter = true;
-            for (Map.Entry<String, Object> entry : filters.entrySet()) {
+            for (Entry<String, Object> entry : filters.entrySet()) {
                 if(!isFirstFilter) {
                     query += " and";
                 } else {
@@ -88,7 +99,11 @@ public class PeopleManager {
     }
     
     public void createTestPeople() {
-        List<Task> tasks = tasksManager.getAllTasks();
+        Task task1 = tasksManager.getTask(1);
+        Task task2 = tasksManager.getTask(2);
+        List<Task> tasks = new ArrayList<>();
+        tasks.add(task1);
+        tasks.add(task2);
         createPerson("John", "Lennon", tasks);  
         createPerson("Paul", "McCartney", new ArrayList<>());  
         createPerson("Ringo", "Starr", new ArrayList<>());  

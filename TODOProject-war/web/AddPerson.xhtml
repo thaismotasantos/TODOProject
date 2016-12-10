@@ -3,8 +3,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
-    <f:metadata>  
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+          
+      xmlns:p="http://primefaces.org/ui" <f:metadata>  
         <f:viewParam name="id" value="#{addPersonMBean.personId}"  
                      required="true"/>  
         <f:viewAction action="#{addPersonMBean.loadPerson()}"/>  
@@ -30,19 +31,52 @@
 
             <ui:define name="content">
                 <f:view>
-                    <h:form>
-                        <h1><h:outputText value="Create/Edit"/></h1>
-                        <h:panelGrid columns="2">
-                            <h:outputLabel value="Person id:" for="personId" />
-                            <h:inputText id="personId" value="#{addPersonMBean.person.id}" title="Person id" required="true" requiredMessage="The id field is required."/>
-                            <h:outputLabel value="First name:" for="firstName" />
-                            <h:inputText id="firstName" value="#{addPersonMBean.person.firstName}" title="First name" required="true" requiredMessage="The first name field is required."/>
-                            <h:outputLabel value="Last name:" for="lastName" />
-                            <h:inputText id="lastName" value="#{addPersonMBean.person.lastName}" title="Last name" required="true" requiredMessage="The last name field is required."/>
-                        </h:panelGrid>
-                        <h:commandButton id="back" value="Back" action="#{addPersonMBean.list}"/>  
-                        <h:commandButton id="save" value="Save" action="#{addPersonMBean.save}"/>       
-                    </h:form>
+                    <p:panelGrid  columns="2" rendered="#{not empty peopleMBean.selectedPerson}" columnClasses="label,value">
+                                    <f:facet name="header">
+                                    </f:facet>
+                                    <h:outputText value="Id:" />
+                                    <h:outputText value="#{peopleMBean.selectedPerson.id}" />
+                                    <h:outputText value="First name" />
+                                    <h:outputText value="#{peopleMBean.selectedPerson.firstName}" />
+                                    <h:outputText value="Last name:" />
+                                    <h:outputText value="#{peopleMBean.selectedPerson.lastName}"/>
+                                </p:panelGrid>
+                        <p:outputPanel id="addPerson" style="text-align:center;">
+                            <h:form>
+                                <h1><h:outputText value="Create/Edit"/></h1>
+                                <h:panelGrid columns="2">
+                                    <h:outputLabel value="Person id:" for="personId" />
+                                    <h:inputText id="personId" value="#{addPersonMBean.person.id}" title="Person id" required="true" requiredMessage="The id field is required."/>
+                                    <h:outputLabel value="First name:" for="firstName" />
+                                    <h:inputText id="firstName" value="#{addPersonMBean.person.firstName}" title="First name" required="true" requiredMessage="The first name field is required."/>
+                                    <h:outputLabel value="Last name:" for="lastName" />
+                                    <h:inputText id="lastName" value="#{addPersonMBean.person.lastName}" title="Last name" required="true" requiredMessage="The last name field is required."/>
+                                </h:panelGrid>
+                                <h:commandButton id="back" value="Back" action="#{addPersonMBean.list}"/>  
+                                <h:commandButton id="save" value="Save" action="#{addPersonMBean.save}"/>
+                                
+                                <h1><h:outputText value="Create/Edit"/></h1>
+                                <h:panelGrid columns="4">
+                                    <h:outputLabel value="First name:" for="firstName" />
+                                    <h:inputText id="firstName" value="#{peopleMBean.newPerson.firstName}" title="First name" required="true" requiredMessage="The first name field is required."/>
+                                    <h:outputLabel value="Last name:" for="lastName" />
+                                    <h:inputText id="lastName" value="#{peopleMBean.newPerson.lastName}" title="Last name" required="true" requiredMessage="The last name field is required."/>
+                                </h:panelGrid>
+                                <br></br>
+                                <h:outputLabel value="Choose tasks:" for="pickList" />
+                                <p:pickList id="pickList" value="#{peopleMBean.availableTasks}" var="availableTask" itemLabel="#{availableTask.name}"
+                                    itemValue="#{availableTask}" converter="taskConverter">
+                                    <f:facet name="sourceCaption">Available</f:facet>
+                                    <f:facet name="targetCaption">Selected</f:facet>
+                                </p:pickList>
+                                <p:commandButton type="submit" actionListener="#{peopleMBean.save}" value="Save" style="margin-top:5px" /> 
+                                <h:commandButton id="back" value="Back" action="#{addPersonMBean.list}"/>  
+                            </h:form>
+                        </p:outputPanel>
+                        
+                        
+                         
+                    
                 </f:view>
             </ui:define>
 

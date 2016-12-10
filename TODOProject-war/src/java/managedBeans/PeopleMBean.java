@@ -6,6 +6,7 @@
 package managedBeans;
 
 import entities.Person;
+import entities.Task;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +18,9 @@ import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import managers.PeopleManager;
+import managers.TasksManager;
 import org.primefaces.event.RowEditEvent;
+import org.primefaces.model.DualListModel;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 
@@ -29,11 +32,17 @@ import org.primefaces.model.SortOrder;
 @ViewScoped
 public class PeopleMBean implements Serializable {
     @EJB
+    private TasksManager tasksManager;
+    @EJB
     private PeopleManager peopleManager;
+    
     private List<Person> peopleList = new ArrayList();
     private String message;
     private LazyDataModel<Person> peopleModel;
     private Person selectedPerson;
+    private String newPersonFirstName;
+    private String newPersonLastName;
+    private DualListModel<Task> availableTasks;
     
     /**
      * Creates a new instance of PeopleMBean
@@ -55,6 +64,12 @@ public class PeopleMBean implements Serializable {
     @PostConstruct
     public void init() {
         this.peopleList = peopleManager.getAllPeople();
+        //this.newPerson = new Person();
+        
+        List<Task> availableTasksSource = this.tasksManager.getAvailableTasks();
+        List<Task> availableTasksTarget = new ArrayList<Task>();
+         
+        this.availableTasks = new DualListModel<Task>(availableTasksSource, availableTasksTarget);        
     }
     
     public String createTestData(){
@@ -64,6 +79,16 @@ public class PeopleMBean implements Serializable {
         return "index?faces-redirect=true";
     }
     
+    public void updateAvailableTasks() {
+        List<Task> availableTasksSource = this.tasksManager.getAvailableTasks();
+        List<Task> availableTasksTarget = new ArrayList<Task>();
+        if(selectedPerson != null) {
+            availableTasksTarget = selectedPerson.getTasksList();
+        }
+         
+        this.availableTasks = new DualListModel<Task>(availableTasksSource, availableTasksTarget);   
+    }
+    
     public void refreshCache(){
          this.peopleList = peopleManager.getAllPeople();
     }
@@ -71,6 +96,17 @@ public class PeopleMBean implements Serializable {
     /*public String showPerson(int id) {  
         return "AddPerson?id=" + id + "&amp;faces-redirect=true";
     }*/
+    
+    public void addPerson() {
+        Person newPerson = new Person(newPersonFirstName, newPersonLastName);
+        peopleManager.createPerson(newPerson, availableTasks.getTarget());
+        
+        addMessage("Successful", "Person added");
+    }
+    
+//    public String addPerson() {
+//        return "AddPerson?amp;faces-redirect=true";
+//    } 
     
     public String editPerson(int id) {  
         return "AddPerson?id=" + id + "&amp;faces-redirect=true";
@@ -105,11 +141,7 @@ public class PeopleMBean implements Serializable {
         selectedPerson = null;
         
         addMessage("Successful", "Person deleted");
-    }
-    
-    public String addPerson() {
-        return "AddPerson?amp;faces-redirect=true";
-    }     
+    } 
     
     public void addMessage(String summary, String detail) {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, detail);
@@ -145,6 +177,30 @@ public class PeopleMBean implements Serializable {
 
     public void setSelectedPerson(Person selectedPerson) {
         this.selectedPerson = selectedPerson;
+    }
+
+    public String getNewPersonFirstName() {
+        return newPersonFirstName;
+    }
+
+    public void setNewPersonFirstName(String newPersonFirstName) {
+        this.newPersonFirstName = newPersonFirstName;
+    }
+
+    public String getNewPersonLastName() {
+        return newPersonLastName;
+    }
+
+    public void setNewPersonLastName(String newPersonLastName) {
+        this.newPersonLastName = newPersonLastName;
+    }
+
+    public DualListModel<Task> getAvailableTasks() {
+        return availableTasks;
+    }
+
+    public void setAvailableTasks(DualListModel<Task> availableTasks) {
+        this.availableTasks = availableTasks;
     }
     
     public String showPeopleList() {

@@ -7,6 +7,7 @@ package managedBeans;
 
 import entities.Person;
 import java.io.Serializable;
+import java.util.ArrayList;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
@@ -35,7 +36,7 @@ public class AddPersonMBean implements Serializable {
         if(personId != 0) {
             person = peopleManager.update(person);
         } else {
-            peopleManager.createPerson(person);            
+            peopleManager.createPerson(person, new ArrayList<>());            
         }
         return "PeopleList?amp;faces-redirect=true";
     }

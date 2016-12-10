@@ -7,6 +7,7 @@ package managers;
 
 import entities.Person;
 import entities.Task;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.EJB;
@@ -94,7 +95,14 @@ public class TasksManager {
         createTask("Tache bla bla", peopleManager.getPersonById(10), "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse felis justo, euismod eget tincidunt faucibus, venenatis nec arcu. Suspendisse potenti.");
         createTask("Test unitaire 9999", peopleManager.getPersonById(3), "Sed nibh enim, varius vel dictum eget, auctor id ante. Nunc diam felis, euismod vel gravida vel, euismod vel augue. ");
         createTask("CRUD Entité", null, "Curabitur pulvinar, metus pretium mattis lacinia, ligula elit condimentum neque, sed pharetra mi magna euismod purus.");
-        
+        for(int i = 0; i < 100; i++) {
+            if(i % 3 == 0)
+                createTask("Task"+i, null, "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse felis justo, euismod eget tincidunt faucibus, venenatis nec arcu. Suspendisse potenti.");
+            else if(i % 3 == 1)
+                createTask("Task"+i, null, "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse felis justo, euismod eget tincidunt faucibus, venenatis nec arcu. Suspendisse potenti.");
+            else
+                createTask("Task"+i, null, "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse felis justo, euismod eget tincidunt faucibus, venenatis nec arcu. Suspendisse potenti.");
+        }
     }
     
     public Task getTaskById(int id) {
@@ -123,6 +131,16 @@ public class TasksManager {
             return 0;
         }
         
+    }
+    
+    public List<Task> getAvailableTasks() {
+        //List<Task> availableTasks = new ArrayList<>();
+        
+        String query = "select t from Task t where t.assignedPerson = null";
+        Query q = em.createQuery(query);
+        return q.getResultList();
+        
+        //return availableTasks;
     }
     
     public void persist(Object object) {

@@ -30,18 +30,18 @@ public class Person implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private String firstName;
-    private String lastName;
-    @OneToMany(cascade=CascadeType.PERSIST, fetch=FetchType.EAGER)
+    private String lastName;   
     //@OrderBy("creationDate ASC")
+    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
     List<Task> tasksList = new ArrayList<Task>();
 
     public Person() {
     }
 
-    public Person(String firstName, String lastName, List<Task> tasksList) {
+    public Person(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.tasksList = tasksList;
+        //this.tasksList = tasksList;
     }
 
     public int getId() {

@@ -31,7 +31,7 @@ public class Task implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private String name;
-    @ManyToOne()
+    @ManyToOne
     private Person assignedPerson;
     @Enumerated(EnumType.STRING)
     private Status status;

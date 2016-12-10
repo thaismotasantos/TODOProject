@@ -14,6 +14,33 @@
                 <p:growl id="message" showDetail="true" sticky="false" />
                 <f:view>
                     <h:form>
+                        <p:commandButton oncomplete="PF('addDialog').show()" actionListener="#{peopleMBean.updateAvailableTasks}" value="Add person" icon="ui-icon-plus"/>
+                        <p:dialog header="Add person" widgetVar="addDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                            <p:outputPanel id="addPerson" style="text-align:center;">
+                                <h:form>
+                                    <h:panelGrid columns="4">
+                                        <h:outputLabel value="First name:" for="firstName" />
+                                        <p:inputText id="firstName" value="#{peopleMBean.newPersonFirstName}" title="First name" required="true" requiredMessage="The first name field is required."/>
+                                        <h:outputLabel value="Last name:" for="lastName" />
+                                        <p:inputText id="lastName" value="#{peopleMBean.newPersonLastName}" title="Last name" required="true" requiredMessage="The last name field is required."/>
+                                    </h:panelGrid>
+                                    <br></br>
+                                    <h:outputLabel value="Choose tasks:" for="pickList" />
+                                    <p:pickList id="pickList" value="#{peopleMBean.availableTasks}" var="availableTask" itemLabel="#{availableTask.name}"
+                                        itemValue="#{availableTask}" showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains" converter="taskConverter">
+                                        <f:facet name="sourceCaption">Available</f:facet>
+                                        <f:facet name="targetCaption">Selected</f:facet>
+                                    </p:pickList>
+                                    <br></br>
+                                    <p:commandButton value="Save" actionListener="#{peopleMBean.addPerson}" onclick="PF('addDialog').hide()" update="@([id$=message]) @([id$=peopleTable])"/>
+                                    
+                                </h:form>
+                            </p:outputPanel>
+                        </p:dialog>
+                        <br></br>
+                    </h:form>
+                    <h:form>                       
+                        <h1><h:outputText value="People"/></h1>
                         <p:dataTable id="peopleTable"
                                      value="#{peopleMBean.peopleModel}" 
                                      var="person"                                       
@@ -69,11 +96,15 @@
                                     </f:facet>
                                 </p:cellEditor>
                             </p:column>
-                            <p:column style="width:70px;text-align: center">
-                                <p:commandButton update="@([id$=personDetail])" oncomplete="PF('personDialog').show()" icon="ui-icon-search" style="display:inline-block">
+                            <p:column style="width:100px;text-align: center">
+                                <p:commandButton update="@([id$=personDetail])" title="View assigned tasks" oncomplete="PF('personDialog').show()" icon="ui-icon-search"
+                                                 disabled="#{empty person.tasksList}" style="display:inline-block">
                                     <f:setPropertyActionListener value="#{person}" target="#{peopleMBean.selectedPerson}" />
                                 </p:commandButton>
-                                <p:commandButton icon="ui-icon-trash" actionListener="#{peopleMBean.deletePerson(person)}"
+                                <p:commandButton update="@([id$=addPerson])" title="Edit" oncomplete="PF('addDialog').show()" icon="ui-icon-pencil" style="display:inline-block">
+                                    <f:setPropertyActionListener value="#{person}" target="#{peopleMBean.selectedPerson}" />
+                                </p:commandButton>
+                                <p:commandButton icon="ui-icon-trash" title="Delete" actionListener="#{peopleMBean.deletePerson(person)}"
                                                  update="@([id$=message]) peopleTable">
                                     <p:confirm header="Confirmation" message="Are you sure?" icon="ui-icon-alert" />
                                 </p:commandButton>
@@ -87,16 +118,16 @@
                             </p:rowEditor>-->
                         </p:dataTable>
                         
-                        <p:dialog header="Person details" widgetVar="personDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                        <p:dialog header="Assigned tasks" widgetVar="personDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
                             <p:outputPanel id="personDetail" style="text-align:center;">
                                 <p:panelGrid  columns="2" rendered="#{not empty peopleMBean.selectedPerson}" columnClasses="label,value">
                                     <f:facet name="header">
                                     </f:facet>
                                     <h:outputText value="Id:" />
                                     <h:outputText value="#{peopleMBean.selectedPerson.id}" />
-                                    <h:outputText value="Year" />
+                                    <h:outputText value="First name" />
                                     <h:outputText value="#{peopleMBean.selectedPerson.firstName}" />
-                                    <h:outputText value="Color:" />
+                                    <h:outputText value="Last name:" />
                                     <h:outputText value="#{peopleMBean.selectedPerson.lastName}"/>
                                 </p:panelGrid>
                                 <h:form>
@@ -117,7 +148,10 @@
                         </p:dialog>
                         
                         <p:contextMenu for="peopleTable">
-                            <p:menuitem value="View" update="personDetail" oncomplete="PF('personDialog').show()" icon="ui-icon-search">
+                            <p:menuitem value="View assigned tasks" update="personDetail" oncomplete="PF('personDialog').show()" icon="ui-icon-search" disabled="#{peopleMBean.selectedPerson.tasksList.size() eq 0}">
+                                <f:setPropertyActionListener value="#{peopleMBean.selectedPerson}" target="#{peopleMBean.selectedPerson}" />
+                            </p:menuitem>
+                            <p:menuitem value="Edit" update="personDetail" oncomplete="PF('personDialog').show()" icon="ui-icon-pencil">
                                 <f:setPropertyActionListener value="#{peopleMBean.selectedPerson}" target="#{peopleMBean.selectedPerson}" />
                             </p:menuitem>
                             <p:menuitem value="Delete" update="@([id$=message]) peopleTable" icon="ui-icon-close" actionListener="#{peopleMBean.deletePerson()}"/>
