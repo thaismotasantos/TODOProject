@@ -8,9 +8,11 @@ package entities;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Temporal;
@@ -28,6 +30,7 @@ public class Task implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private String name;
+    @ManyToOne()
     private Person assignedPerson;
     private ETaskStatus status;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
@@ -38,10 +41,9 @@ public class Task implements Serializable {
         
     }
 
-    public Task(String name, Person assignedPerson, ETaskStatus status, String description) {
+    public Task(String name, Person assignedPerson, String description) {
         this.name = name;
         this.assignedPerson = assignedPerson;
-        this.status = status;
         this.description = description;
         this.creationDate = new Date();
     }

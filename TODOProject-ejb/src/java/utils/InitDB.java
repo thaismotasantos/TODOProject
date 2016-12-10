@@ -35,9 +35,10 @@ public class InitDB {
 
     @PostConstruct
     public void init() {
-        tm.createTestTasks();
+        
         peopleManager.createTestPeople();
         createPeople();
+        tm.createTestTasks();
     }
     
     private void createPeople() {

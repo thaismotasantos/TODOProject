@@ -147,4 +147,7 @@ public class PeopleMBean implements Serializable {
         this.selectedPerson = selectedPerson;
     }
     
+    public String showPeopleList() {
+        return "PeopleList?amp;faces-redirect=true";
+    }
 }

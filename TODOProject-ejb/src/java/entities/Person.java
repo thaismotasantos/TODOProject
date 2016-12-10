@@ -76,6 +76,19 @@ public class Person implements Serializable {
         this.tasksList = tasksList;
     }
 
+    
+    public void addTask(Task task) {
+        this.tasksList.add(task);
+        if (task.getAssignedPerson() != this) {
+            task.setAssignedPerson(this);
+        }
+    }
+    
+    public void removeTask(Task task) {
+        this.tasksList.remove(task);
+        task.setAssignedPerson(null);
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;

@@ -117,6 +117,10 @@ public class PeopleManager {
     }
 
     public void delete(Person p) {
+        for (Task t : p.getTasksList()) {
+            t.setAssignedPerson(null);
+            tasksManager.update(t);
+        }
         em.remove(em.merge(p));
     }
 }
