@@ -110,9 +110,11 @@ public class TasksManager {
     }
     
     public Task update(Task task) {
-        Person newAssignedPerson = task.getAssignedPerson();
+        Person newAssignedPerson = task.getAssignedPerson(); //peopleManager.getPersonById(task.getAssignedPerson().getId());
+        
         System.out.println("#################################" + newAssignedPerson);
         newAssignedPerson.addTask(task);
+        //em.merge(newAssignedPerson);
         
         return em.merge(task);
     }

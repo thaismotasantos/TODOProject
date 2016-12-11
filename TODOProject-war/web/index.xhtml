@@ -70,7 +70,7 @@
                                 </p:cellEditor>
                             </p:column>
                             <p:column headerText="Assigned to" sortBy="#{task.assignedPerson.firstName}" filterBy="#{task.assignedPerson.firstName}" filterMatchMode="contains" >
-                                <!--<p:cellEditor>
+                                <p:cellEditor>
                                     <f:facet name="output">
                                         <h:outputText value="#{task.assignedPerson.firstName} #{task.assignedPerson.lastName}"/>
                                     </f:facet>
@@ -80,7 +80,7 @@
                                             <f:selectItems value="#{peopleMBean.peopleList}" var="person" itemLabel="#{person.firstName} #{person.lastName}" itemValue="#{person}"/>
                                         </p:selectOneMenu>
                                     </f:facet>
-                                </p:cellEditor>-->
+                                </p:cellEditor>
                             </p:column>
                             <p:column headerText="Status" sortBy="#{task.status}">
                                 <p:cellEditor>

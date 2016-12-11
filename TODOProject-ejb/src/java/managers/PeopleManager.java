@@ -45,7 +45,7 @@ public class PeopleManager {
     public void createPerson(Person person, List<Task> tasks) {
         List l = new ArrayList<Task>();
         for(Task t : tasks) {
-            t = tasksManager.getTask(t.getId());
+            t = tasksManager.getTaskById(t.getId());
             t.setAssignedPerson(person);
             l.add(t);
         }
@@ -99,12 +99,12 @@ public class PeopleManager {
     }
     
     public void createTestPeople() {
-        Task task1 = tasksManager.getTask(1);
-        Task task2 = tasksManager.getTask(2);
+        /*Task task1 = tasksManager.getTaskById(1);
+        Task task2 = tasksManager.getTaskById(2);
         List<Task> tasks = new ArrayList<>();
         tasks.add(task1);
-        tasks.add(task2);
-        createPerson("John", "Lennon", tasks);  
+        tasks.add(task2);*/
+        createPerson("John", "Lennon", new ArrayList<>());  
         createPerson("Paul", "McCartney", new ArrayList<>());  
         createPerson("Ringo", "Starr", new ArrayList<>());  
         createPerson("Georges", "Harrisson", new ArrayList<>());
@@ -129,7 +129,7 @@ public class PeopleManager {
     public Person update(Person person, List<Task> tasks) {
         List l = new ArrayList<Task>();
         for(Task t : tasks) {
-            t = tasksManager.getTask(t.getId());
+            t = tasksManager.getTaskById(t.getId());
             t.setAssignedPerson(person);
             l.add(t);
         }
@@ -137,7 +137,7 @@ public class PeopleManager {
         if(person.getTasksList().removeAll(l)) {
             notAssignedToPersonAnymore = person.getTasksList();
             for(Task t : notAssignedToPersonAnymore) {
-                t = tasksManager.getTask(t.getId());
+                t = tasksManager.getTaskById(t.getId());
                 t.setAssignedPerson(null);
             }
         }

@@ -11,11 +11,6 @@
         </file>
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/C:/Users/thais/Documents/NetBeansProjects/TODOProject/TODOProject-war/src/java/managedBeans/PeopleMBean.java</file>
-            <file>file:/C:/Users/thais/Documents/NetBeansProjects/TODOProject/TODOProject-war/web/PeopleList.xhtml</file>
-            <file>file:/C:/Users/thais/Documents/NetBeansProjects/TODOProject/TODOProject-war/web/index.xhtml</file>
-        </group>
         <group name="French Chic">
             <file>file:/C:/Users/cojoc/DEV/NetBeansProjects/TODOProject/TODOProject-war/src/java/managedBeans/PeopleMBean.java</file>
             <file>file:/C:/Users/cojoc/DEV/NetBeansProjects/TODOProject/TODOProject-war/src/java/managedBeans/AddTaskMBean.java</file>
@@ -24,6 +19,11 @@
             <file>file:/C:/Users/cojoc/DEV/NetBeansProjects/TODOProject/TODOProject-war/web/resources/css/default.css</file>
             <file>file:/C:/Users/cojoc/DEV/NetBeansProjects/TODOProject/TODOProject-war/src/java/managedBeans/TasksMBean.java</file>
             <file>file:/C:/Users/cojoc/DEV/NetBeansProjects/TODOProject/TODOProject-war/web/AddPerson.xhtml</file>
+        </group>
+        <group>
+            <file>file:/C:/Users/thais/Documents/NetBeansProjects/TODOProject/TODOProject-war/src/java/managedBeans/PeopleMBean.java</file>
+            <file>file:/C:/Users/thais/Documents/NetBeansProjects/TODOProject/TODOProject-war/web/PeopleList.xhtml</file>
+            <file>file:/C:/Users/thais/Documents/NetBeansProjects/TODOProject/TODOProject-war/web/index.xhtml</file>
         </group>
     </open-files>
 </project-private>
