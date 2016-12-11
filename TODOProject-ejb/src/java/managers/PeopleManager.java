@@ -125,6 +125,26 @@ public class PeopleManager {
     public Person update(Person person) {
         return em.merge(person);  
     }
+    
+    public Person update(Person person, List<Task> tasks) {
+        List l = new ArrayList<Task>();
+        for(Task t : tasks) {
+            t = tasksManager.getTask(t.getId());
+            t.setAssignedPerson(person);
+            l.add(t);
+        }
+        List<Task> notAssignedToPersonAnymore = new ArrayList<>();
+        if(person.getTasksList().removeAll(l)) {
+            notAssignedToPersonAnymore = person.getTasksList();
+            for(Task t : notAssignedToPersonAnymore) {
+                t = tasksManager.getTask(t.getId());
+                t.setAssignedPerson(null);
+            }
+        }
+        
+        person.setTasksList(l);
+        return em.merge(person);  
+    }
 
     public void delete(int personId) {
         Person p = em.find(Person.class, personId);

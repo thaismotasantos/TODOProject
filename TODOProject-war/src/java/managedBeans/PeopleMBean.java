@@ -112,9 +112,12 @@ public class PeopleMBean implements Serializable {
         return "AddPerson?id=" + id + "&amp;faces-redirect=true";
     }
     
-    public String editPerson() {  
-        int id = selectedPerson.getId();
-        return "AddPerson?id=" + id + "&amp;faces-redirect=true";
+    public void editPerson() {       
+        peopleManager.update(selectedPerson, availableTasks.getTarget());
+        
+        addMessage("Successful", "Person modified");
+//        int id = selectedPerson.getId();
+//        return "AddPerson?id=" + id + "&amp;faces-redirect=true";
     }
     
     public void onEdit(RowEditEvent event) {
