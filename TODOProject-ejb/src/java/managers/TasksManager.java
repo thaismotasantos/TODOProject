@@ -15,7 +15,7 @@ import javax.ejb.LocalBean;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import utils.ETaskStatus;
+import utils.Status;
 
 /**
  *
@@ -29,25 +29,17 @@ public class TasksManager {
     @PersistenceContext(unitName = "TODOProject-ejbPU")
     private EntityManager em;
     
-    public void createTask(String name, Person assignedPerson, String description) {
+    public Task createTask(String name, Person assignedPerson, String description) {
         Task task = new Task(name, assignedPerson, description);
         if (assignedPerson == null) {
-            task.setStatus(ETaskStatus.NOT_ASSIGNED);
+            task.setStatus(Status.NOT_ASSIGNED);
         } else {
-            task.setStatus(ETaskStatus.IN_PROGRESS);
+            task.setStatus(Status.IN_PROGRESS);
             assignedPerson.addTask(task);
             peopleManager.update(assignedPerson);
         }
         persist(task);
-    }
-    
-    public void createTestTasks() {
-        createTask("Corriger bug XYZ", peopleManager.getPersonById(5), "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse felis justo, euismod eget tincidunt faucibus, venenatis nec arcu. Suspendisse potenti.");
-        createTask("Implémtenter fonction X", peopleManager.getPersonById(5), "Sed nibh enim, varius vel dictum eget, auctor id ante. Nunc diam felis, euismod vel gravida vel, euismod vel augue. ");
-        createTask("Finir test ZZZ", peopleManager.getPersonById(2), "Curabitur pulvinar, metus pretium mattis lacinia, ligula elit condimentum neque, sed pharetra mi magna euismod purus.");
-        createTask("Tache bla bla", peopleManager.getPersonById(10), "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse felis justo, euismod eget tincidunt faucibus, venenatis nec arcu. Suspendisse potenti.");
-        createTask("Test unitaire 9999", peopleManager.getPersonById(3), "Sed nibh enim, varius vel dictum eget, auctor id ante. Nunc diam felis, euismod vel gravida vel, euismod vel augue. ");
-        createTask("CRUD Entité", null, "Curabitur pulvinar, metus pretium mattis lacinia, ligula elit condimentum neque, sed pharetra mi magna euismod purus.");
+        return task;
     }
     
     public List<Task> getAllTasks() {
@@ -95,12 +87,23 @@ public class TasksManager {
         return c.intValue();
     }
     
-    public Task getTask(int taskId) {
-        return em.find(Task.class, taskId);
+    public void createTestTasks() {
+        createTask("Corriger bug XYZ", peopleManager.getPersonById(5), "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse felis justo, euismod eget tincidunt faucibus, venenatis nec arcu. Suspendisse potenti.");
+        createTask("Implémtenter fonction X", peopleManager.getPersonById(5), "Sed nibh enim, varius vel dictum eget, auctor id ante. Nunc diam felis, euismod vel gravida vel, euismod vel augue. ");
+        createTask("Finir test ZZZ", peopleManager.getPersonById(2), "Curabitur pulvinar, metus pretium mattis lacinia, ligula elit condimentum neque, sed pharetra mi magna euismod purus.");
+        createTask("Tache bla bla", peopleManager.getPersonById(10), "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse felis justo, euismod eget tincidunt faucibus, venenatis nec arcu. Suspendisse potenti.");
+        createTask("Test unitaire 9999", peopleManager.getPersonById(3), "Sed nibh enim, varius vel dictum eget, auctor id ante. Nunc diam felis, euismod vel gravida vel, euismod vel augue. ");
+        createTask("CRUD Entité", null, "Curabitur pulvinar, metus pretium mattis lacinia, ligula elit condimentum neque, sed pharetra mi magna euismod purus.");
+        
+    }
+    
+    public Task getTaskById(int id) {
+        return em.find(Task.class, id);
     }
     
     public Task update(Task task) {
         Person newAssignedPerson = task.getAssignedPerson();
+        System.out.println("#################################" + newAssignedPerson);
         newAssignedPerson.addTask(task);
         
         return em.merge(task);

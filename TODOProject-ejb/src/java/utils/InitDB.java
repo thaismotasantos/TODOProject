@@ -5,8 +5,8 @@
  */
 package utils;
 
+import entities.Task;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -31,14 +31,16 @@ public class InitDB {
     @EJB
     private PeopleManager peopleManager;
     @EJB
-    private TasksManager tm;
+    private TasksManager tasksManager;
 
     @PostConstruct
     public void init() {
         
         peopleManager.createTestPeople();
         createPeople();
-        tm.createTestTasks();
+        tasksManager.createTestTasks();
+        Task t = tasksManager.getTaskById(108);
+        t.setStatus(Status.COMPLETED);
     }
     
     private void createPeople() {

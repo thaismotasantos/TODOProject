@@ -10,20 +10,10 @@
 
         <ui:composition template="./resources/defaultTemplate.xhtml">
 
-            <ui:define name="top">
-                top
-            </ui:define>
+            <ui:define name="top"></ui:define>
 
-            <ui:define name="left">
-                <h:form>
-                    <h:commandButton action="#{peopleMBean.showPeopleList()}"
-                                     value="Show people list"/>
-                </h:form>
-                <h:form>
-                    <h:commandButton action="#{peopleMBean.addPerson()}"
-                                     value="Add person"/>
-                </h:form>
-                <p:commandButton value="Create new task" type="button" onclick="PF('createTaskDialog').show();" />
+            <ui:define name="content">
+                <p:commandButton value="Create new task" type="button" onclick="PF('createTaskDialog').show();" icon="ui-icon-plus"/>
                 
                 <p:dialog header="Create new task" widgetVar="createTaskDialog" minHeight="40">
                     <h:form>
@@ -43,14 +33,10 @@
                     </h:form>
                 </p:dialog>
                 
-            </ui:define>
-
-            <ui:define name="content">
                 <f:view>
                     <h:form>
-                        <h1><h:outputText value="Tasks"/></h1>
                         <p:dataTable id="tasksTable" 
-                                     value="#{tasksMBean.tasksList}" 
+                                     value="#{tasksMBean.tasksModel}" 
                                      var="task"
                                      rows="10" 
                                      paginator="true"
@@ -58,6 +44,7 @@
                                      rowsPerPageTemplate="5,10,15"
                                      lazy="true"
                                      rowKey="#{task.id}"
+                                     rowStyleClass="#{task.status eq 'NOT_ASSIGNED' ? 'not_assigned' : (task.status eq 'IN_PROGRESS' ? 'in_progress' : 'completed')}"
                                      selection="#{tasksMBean.selectedTask}"
                                      selectionMode="single"
                                      editable="true">
@@ -72,7 +59,7 @@
                                 </f:facet>
                                 <h:outputText value="#{task.id}"/>
                             </p:column>
-                            <p:column headerText="Task" sortBy="#{task.name}">
+                            <p:column headerText="Task" sortBy="#{task.name}"  filterBy="#{task.name}" filterMatchMode="contains" >
                                 <p:cellEditor>
                                     <f:facet name="output">
                                         <h:outputText value="#{task.name}"/>
@@ -81,10 +68,9 @@
                                         <h:inputText value="#{task.name}"/>
                                     </f:facet>
                                 </p:cellEditor>
-                                
                             </p:column>
-                            <p:column headerText="Assigned to" sortBy="#{task.assignedPerson.firstName}">
-                                <p:cellEditor>
+                            <p:column headerText="Assigned to" sortBy="#{task.assignedPerson.firstName}" filterBy="#{task.assignedPerson.firstName}" filterMatchMode="contains" >
+                                <!--<p:cellEditor>
                                     <f:facet name="output">
                                         <h:outputText value="#{task.assignedPerson.firstName} #{task.assignedPerson.lastName}"/>
                                     </f:facet>
@@ -94,16 +80,16 @@
                                             <f:selectItems value="#{peopleMBean.peopleList}" var="person" itemLabel="#{person.firstName} #{person.lastName}" itemValue="#{person}"/>
                                         </p:selectOneMenu>
                                     </f:facet>
-                                </p:cellEditor>
+                                </p:cellEditor>-->
                             </p:column>
-                            <p:column headerText="Status" sortBy="#{task.status.message}">
+                            <p:column headerText="Status" sortBy="#{task.status}">
                                 <p:cellEditor>
                                     <f:facet name="output">
-                                        <h:outputText value="#{task.status.message}" style="color: #{task.status.color};"/>
+                                        <h:outputText value="#{task.status}"/>
                                     </f:facet>
                                     <f:facet name="input">
                                         <p:selectOneMenu value="#{task.status}">
-                                            <f:selectItems value="#{tasksMBean.statusList}" />
+                                            <f:selectItems value="#{tasksMBean.status}"/>
                                         </p:selectOneMenu>
                                     </f:facet>
                                 </p:cellEditor>
@@ -117,17 +103,20 @@
                                 </h:outputText>
                             </p:column>
                             <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="Description"/>
-                                </f:facet>
-                                <h:outputText value="#{task.description}" />
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{task.description}"/>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:inputTextarea value="#{task.description}"/>
+                                    </f:facet>
+                                </p:cellEditor>
                             </p:column>
-                            <p:column>
+                            <p:column style="width:70px;text-align: center">
                                 <p:commandButton icon="ui-icon-trash" actionListener="#{tasksMBean.deleteTask(task)}"
                                                  update="@([id$=message]) tasksTable">
                                     <p:confirm header="Confirmation" message="Are you sure?" icon="ui-icon-alert" />
                                 </p:commandButton>
-                                
                             </p:column>
                         </p:dataTable>
                         

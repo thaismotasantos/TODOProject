@@ -27,3 +27,13 @@ a:link:hover, a:visited:hover  {
   font-weight : bold;
   text-decoration : underline;
 }
+
+.not_assigned {
+    background: lightpink !important;
+}
+.in_progress {
+    background: moccasin !important;
+}
+.completed {
+    background: palegreen !important;
+}

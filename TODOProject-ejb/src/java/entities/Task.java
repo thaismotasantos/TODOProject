@@ -8,7 +8,8 @@ package entities;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,14 +17,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Temporal;
-import utils.ETaskStatus;
+import utils.Status;
 
 /**
  *
  * @author thais
  */
 @Entity
-@NamedQueries({@NamedQuery(name = "Task.findAll", query = "SELECT t FROM Task t")})
+@NamedQueries({@NamedQuery(name = "Task.findAll", query = "SELECT t FROM Task t order by t.id")})
 public class Task implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -32,7 +33,8 @@ public class Task implements Serializable {
     private String name;
     @ManyToOne()
     private Person assignedPerson;
-    private ETaskStatus status;
+    @Enumerated(EnumType.STRING)
+    private Status status;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date creationDate;
     private String description;
@@ -72,11 +74,11 @@ public class Task implements Serializable {
         this.assignedPerson = assignedPerson;
     }
 
-    public ETaskStatus getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(ETaskStatus status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 

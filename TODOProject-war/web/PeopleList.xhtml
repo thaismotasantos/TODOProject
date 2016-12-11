@@ -9,22 +9,11 @@
     <body>
 
         <ui:composition template="./resources/defaultTemplate.xhtml">
-            <ui:define name="left">
-                <h:form>
-                    <h:commandButton action="#{tasksMBean.showPeopleList()}"
-                                     value="Show people list"/>            
-                </h:form>
-                <h:form>
-                    <h:commandButton action="#{peopleMBean.addPerson()}"
-                                     value="Add person"/>            
-                </h:form>
-            </ui:define>
-
+            <ui:define name="top"></ui:define>
             <ui:define name="content">
                 <p:growl id="message" showDetail="true" sticky="false" />
                 <f:view>
                     <h:form>
-                        <h1><h:outputText value="People"/></h1>
                         <p:dataTable id="peopleTable"
                                      value="#{peopleMBean.peopleModel}" 
                                      var="person"                                       

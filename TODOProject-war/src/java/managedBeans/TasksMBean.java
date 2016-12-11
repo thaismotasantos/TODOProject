@@ -21,7 +21,7 @@ import managers.TasksManager;
 import org.primefaces.event.RowEditEvent;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
-import utils.ETaskStatus;
+import utils.Status;
 
 /**
  *
@@ -36,8 +36,8 @@ public class TasksMBean implements Serializable {
     private String message;
     private LazyDataModel<Task> tasksModel;
     private Task selectedTask;
-    private List<ETaskStatus> statusList =
-                 new ArrayList<ETaskStatus>(EnumSet.allOf(ETaskStatus.class));
+    
+    private List<Status> status = new ArrayList<Status>(EnumSet.allOf(Status.class));
     /**
      * Creates a new instance of TasksMBean
      */
@@ -99,13 +99,14 @@ public class TasksMBean implements Serializable {
         this.selectedTask = selectedTask;
     }
 
-    public List<ETaskStatus> getStatusList() {
-        return statusList;
+    public List<Status> getStatus() {
+        return status;
     }
 
-    public void setStatusList(List<ETaskStatus> statusList) {
-        this.statusList = statusList;
+    public void setStatus(List<Status> status) {
+        this.status = status;
     }
+    
     
     public void onEdit(RowEditEvent event) {
         
@@ -130,15 +131,12 @@ public class TasksMBean implements Serializable {
         return "index?amp;faces-redirect=true";
     }
     
-    public void deleteTask() {
-        tasksManager.delete(selectedTask);
-        selectedTask = null;
-        addMessage("Successful", "Task deleted");
-    }
-    
     public void addMessage(String summary, String detail) {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, detail);
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
+    public String showTasksList() {
+        return "index?amp;faces-redirect=true";
+    }
 }
