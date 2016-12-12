@@ -20,6 +20,8 @@ import javax.faces.view.ViewScoped;
 import managers.PeopleManager;
 import managers.TasksManager;
 import org.primefaces.event.RowEditEvent;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.event.TransferEvent;
 import org.primefaces.model.DualListModel;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
@@ -43,6 +45,8 @@ public class PeopleMBean implements Serializable {
     private String newPersonFirstName;
     private String newPersonLastName;
     private DualListModel<Task> availableTasks;
+    private List<Task> availableTasksSource = new ArrayList();
+    private List<Task> availableTasksTarget = new ArrayList();
     
     /**
      * Creates a new instance of PeopleMBean
@@ -66,8 +70,8 @@ public class PeopleMBean implements Serializable {
         this.peopleList = peopleManager.getAllPeople();
         //this.newPerson = new Person();
         
-        List<Task> availableTasksSource = this.tasksManager.getAvailableTasks();
-        List<Task> availableTasksTarget = new ArrayList<Task>();
+        availableTasksSource = this.tasksManager.getAvailableTasks();
+        availableTasksTarget = new ArrayList<Task>();
          
         this.availableTasks = new DualListModel<Task>(availableTasksSource, availableTasksTarget);        
     }
@@ -79,14 +83,29 @@ public class PeopleMBean implements Serializable {
         return "index?faces-redirect=true";
     }
     
+    public void updateAvailableTasks(SelectEvent event) {
+        Person person = (Person)event.getObject();
+        availableTasksSource = this.tasksManager.getAvailableTasks();
+        availableTasksTarget = new ArrayList<Task>();
+        if(person != null) {
+            availableTasksTarget = person.getTasksList();
+        }
+         
+        this.availableTasks.setSource(availableTasksSource);
+        this.availableTasks.setTarget(availableTasksTarget);
+        //= new DualListModel<Task>(availableTasksSource, availableTasksTarget);   
+    }
+    
     public void updateAvailableTasks() {
-        List<Task> availableTasksSource = this.tasksManager.getAvailableTasks();
-        List<Task> availableTasksTarget = new ArrayList<Task>();
+        availableTasksSource = this.tasksManager.getAvailableTasks();
+        availableTasksTarget = new ArrayList<Task>();
         if(selectedPerson != null) {
             availableTasksTarget = selectedPerson.getTasksList();
         }
          
-        this.availableTasks = new DualListModel<Task>(availableTasksSource, availableTasksTarget);   
+        this.availableTasks.setSource(availableTasksSource);
+        this.availableTasks.setTarget(availableTasksTarget);
+        //= new DualListModel<Task>(availableTasksSource, availableTasksTarget);   
     }
     
     public void refreshCache(){
@@ -118,6 +137,15 @@ public class PeopleMBean implements Serializable {
         addMessage("Successful", "Person modified");
 //        int id = selectedPerson.getId();
 //        return "AddPerson?id=" + id + "&amp;faces-redirect=true";
+    }
+    
+    public void onTransferTask(TransferEvent event) {
+        /*if(event.getItems() != null)
+            availableTasksTarget = new ArrayList<>();
+        for(Object item : event.getItems()) {
+            availableTasksTarget.add((Task)item);
+        }*/
+        //availableTasksTarget = availableTasks.getTarget();
     }
     
     public void onEdit(RowEditEvent event) {

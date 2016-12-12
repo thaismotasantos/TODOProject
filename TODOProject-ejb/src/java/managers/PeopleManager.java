@@ -79,8 +79,10 @@ public class PeopleManager {
             } else {
                 query += " ASC";
             }
+        } else {
+            query += " order by p.id ASC";
         }
-        System.out.println("FIND RANGE GESTIONNAIRE QUERY " + query + " start " + start + " nb " + nb);
+        //System.out.println("FIND RANGE GESTIONNAIRE QUERY " + query + " start " + start + " nb " + nb);
         Query q = em.createQuery(query);
         if(filters != null && !filters.isEmpty()) {
             for (Map.Entry<String, Object> entry : filters.entrySet()) {
@@ -134,7 +136,7 @@ public class PeopleManager {
             l.add(t);
         }
         List<Task> notAssignedToPersonAnymore = new ArrayList<>();
-        if(person.getTasksList().removeAll(l)) {
+        if(person.getTasksList().removeAll(l) || !person.getTasksList().isEmpty()) {
             notAssignedToPersonAnymore = person.getTasksList();
             for(Task t : notAssignedToPersonAnymore) {
                 t = tasksManager.getTaskById(t.getId());

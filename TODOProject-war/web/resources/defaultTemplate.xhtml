@@ -17,17 +17,18 @@
 
 
         <div id="top" class="top">
-            <p:tabMenu activeIndex="#{param.i}">
-                <p:menuitem value="Show Tasks" outcome="/index" icon="ui-icon-note">
-                    <f:param name="i" value="0" />
-                </p:menuitem>
-                <p:menuitem value="Show People" outcome="/PeopleList" icon="ui-icon-contact">
-                    <f:param name="i" value="1" />
-                </p:menuitem>
-                
-            </p:tabMenu>
-            <ui:insert name="top">TODO - Task Manager</ui:insert>
-            
+            <h:form>
+                <p:tabMenu activeIndex="#{param.i}">
+                    <p:menuitem value="Show Tasks" outcome="/index" icon="ui-icon-note">
+                        <f:param name="i" value="0" />
+                    </p:menuitem>
+                    <p:menuitem value="Show People" outcome="/PeopleList" icon="ui-icon-contact">
+                        <f:param name="i" value="1" />
+                    </p:menuitem>
+
+                </p:tabMenu>
+                <ui:insert name="top">TODO - Task Manager</ui:insert>
+            </h:form>
         </div>
         <div>
             <div id="content" class="left_content">
