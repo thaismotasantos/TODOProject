@@ -13,7 +13,7 @@
             <ui:define name="top"></ui:define>
 
             <ui:define name="content">
-                <p:commandButton value="Create new task" type="button" onclick="PF('createTaskDialog').show();" icon="ui-icon-plus"/>
+                
                 
                 <p:dialog header="Create new task" widgetVar="createTaskDialog" minHeight="40">
                     <h:form>
@@ -21,7 +21,7 @@
                             <h:outputLabel value="Name:" for="taskname" />
                             <p:inputText id="taskname" value="#{addTaskMBean.name}" title="Task name" required="true" requiredMessage="The field is required."/>
                             <h:outputLabel value="Description:" for="taskdescription" />
-                            <p:inputText id="taskdescription" value="#{addTaskMBean.description}" title="Task description" required="true" requiredMessage="The field is required."/>
+                            <p:inputTextarea id="taskdescription" value="#{addTaskMBean.description}" title="Task description" required="true" requiredMessage="The field is required."/>
                             <h:outputLabel value="Assigned person:" for="taskassignedPerson" />
                             <p:selectOneMenu id="taskassignedPerson" value="#{addTaskMBean.assignedPersonId}">
                                 <f:selectItem itemValue="0" itemLabel="NOT ASSIGNED"/>
@@ -52,6 +52,9 @@
                             <p:ajax event="rowEdit" listener="#{tasksMBean.onEdit}"/>
                             
                             <p:column style="width:32px;text-align: center">
+                                <f:facet name="header">
+                                    <p:commandButton type="button" onclick="PF('createTaskDialog').show();" icon="ui-icon-plus"/>
+                                </f:facet>                                
                                 <p:rowEditor></p:rowEditor>
                             </p:column>
                             <p:column headerText="Task" sortBy="#{task.name}"  filterBy="#{task.name}" filterMatchMode="contains" >
@@ -63,6 +66,11 @@
                                         <h:inputText value="#{task.name}"/>
                                     </f:facet>
                                 </p:cellEditor>
+                            </p:column>
+                            <p:column headerText="Created on" sortBy="#{task.creationDate}"  filterBy="#{task.creationDate}" filterMatchMode="contains" >
+                                <h:outputText value="#{task.creationDate}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy HH:mm"/>
+                                </h:outputText>
                             </p:column>
                             <p:column headerText="Status" sortBy="#{task.status}">
                                 <p:cellEditor>
@@ -103,7 +111,7 @@
                             </p:column>
                         </p:dataTable>
                         
-                        <p:dialog header="Show task details" widgetVar="taskDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" width="300">
+                        <p:dialog header="Show task details" widgetVar="taskDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" width="300" >
                             <p:outputPanel id="taskDetail" style="text-align:center;">
                                 <p:outputPanel deferred="true">
                                     <h3>ID</h3>

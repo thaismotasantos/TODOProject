@@ -12,37 +12,33 @@
             <ui:define name="top"></ui:define>
             <ui:define name="content">
                 <p:growl id="message" showDetail="true" sticky="false" />
-                <f:view>
-                    <h:form id="form">
-                        <p:commandButton oncomplete="PF('addDialog').show()" actionListener="#{peopleMBean.updateAvailableTasks}" value="Add person" icon="ui-icon-plus">
-                            <p:resetInput target=":form:addDialogForm" />
-                        </p:commandButton>
-                        <p:dialog header="Add person" widgetVar="addDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
-                            <p:outputPanel id="addPerson" style="text-align:center;">
-                                <h:form id="addDialogForm">
-                        <p:panel id="panel" style="margin-bottom:10px;">
-                                    <h:panelGrid columns="4">
-                                        <h:outputLabel value="First name:" for="firstName" />
-                                        <p:inputText id="firstName" value="#{peopleMBean.newPersonFirstName}" title="First name" required="true" requiredMessage="The first name field is required."/>
-                                        <h:outputLabel value="Last name:" for="lastName" />
-                                        <p:inputText id="lastName" value="#{peopleMBean.newPersonLastName}" title="Last name" required="true" requiredMessage="The last name field is required."/>
-                                    </h:panelGrid>
-                                    <br></br>
-                                    <h:outputLabel value="Choose tasks:" for="pickList" />
-                                    <p:pickList id="pickList" value="#{peopleMBean.availableTasks}" var="availableTask" itemLabel="#{availableTask.name}"
-                                        itemValue="#{availableTask}" showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains" converter="taskConverter">
-                                        <f:facet name="sourceCaption">Available</f:facet>
-                                        <f:facet name="targetCaption">Selected</f:facet>
-                                    </p:pickList>
-                                    <br></br>
+                
+                        
+                <p:dialog header="Add person" widgetVar="addDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                    
+                        <h:form id="addDialogForm">
+                            <p:panel id="panel" style="margin-bottom:10px;">
+                                <h:panelGrid columns="4">
+                                    <h:outputLabel value="First name:" for="addFirstName" />
+                                    <p:inputText id="addFirstName" value="#{peopleMBean.newPersonFirstName}" title="First name" required="true" requiredMessage="The first name field is required."/>
+                                    <h:outputLabel value="Last name:" for="addLastName" />
+                                    <p:inputText id="addLastName" value="#{peopleMBean.newPersonLastName}" title="Last name" required="true" requiredMessage="The last name field is required."/>
+                                </h:panelGrid>
+                                <br></br>
+                                <h:outputLabel value="Choose tasks:" for="pickList" />
+                                <p:pickList id="pickList" value="#{peopleMBean.availableTasks}" var="availableTask" itemLabel="#{availableTask.name}"
+                                    itemValue="#{availableTask}" showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains" converter="taskConverter">
+                                    <f:facet name="sourceCaption">Available</f:facet>
+                                    <f:facet name="targetCaption">Selected</f:facet>
+                                    <p:ajax event="transfer" listener="#{peopleMBean.onTransferTask}" />
+                                </p:pickList>
+                                <br></br>
                             </p:panel>
-                                    <p:commandButton value="Save" actionListener="#{peopleMBean.addPerson}" onclick="PF('addDialog').hide()" update="@([id$=message]) @([id$=peopleTable])">
-                                        <p:ajax update="panel" resetValues="true" />
-                                    </p:commandButton>
-                                </h:form>
-                            </p:outputPanel>
-                        </p:dialog>
-                    </h:form>
+                            <p:commandButton value="Save" actionListener="#{peopleMBean.addPerson}" ajax="false" update="@([id$=message]) @([id$=peopleTable])">
+                            </p:commandButton>
+                        </h:form>
+                </p:dialog>
+                <f:view>
                     <h:form>                       
                         <p:dataTable id="peopleTable"
                                      value="#{peopleMBean.peopleModel}" 
@@ -72,6 +68,9 @@
                                 <p:rowToggler />
                             </p:column>-->
                             <p:column style="width:32px;text-align: center">
+                                <f:facet name="header">
+                                    <p:commandButton update="@([id$=message])" title="Add task" oncomplete="PF('addDialog').show()" actionListener="#{peopleMBean.updateAvailableTasks}" icon="ui-icon-plus" />
+                                </f:facet>
                                 <p:rowEditor></p:rowEditor>
                             </p:column>
                             <p:column sortBy="#{person.id}">

@@ -7,6 +7,7 @@ package managedBeans;
 
 import entities.Person;
 import entities.Task;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -130,6 +131,10 @@ public class PeopleMBean implements Serializable {
     public void addPerson() {
         Person newPerson = new Person(newPersonFirstName, newPersonLastName);
         peopleManager.createPerson(newPerson, availableTasks.getTarget());
+        
+        newPersonFirstName = null;
+        newPersonLastName = null;
+        updateAvailableTasks();
         
         addMessage("Successful", "Person added");
     }

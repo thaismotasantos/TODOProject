@@ -17,6 +17,7 @@ import javax.ejb.LocalBean;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import utils.Status;
 
 /**
  *
@@ -47,6 +48,7 @@ public class PeopleManager {
         for(Task t : tasks) {
             t = tasksManager.getTaskById(t.getId());
             t.setAssignedPerson(person);
+            t.setStatus(Status.IN_PROGRESS);
             l.add(t);
         }
         person.setTasksList(l);
@@ -133,6 +135,7 @@ public class PeopleManager {
         for(Task t : tasks) {
             t = tasksManager.getTaskById(t.getId());
             t.setAssignedPerson(person);
+            t.setStatus(Status.IN_PROGRESS);
             l.add(t);
         }
         List<Task> notAssignedToPersonAnymore = new ArrayList<>();
@@ -141,6 +144,7 @@ public class PeopleManager {
             for(Task t : notAssignedToPersonAnymore) {
                 t = tasksManager.getTaskById(t.getId());
                 t.setAssignedPerson(null);
+                t.setStatus(Status.NOT_ASSIGNED);
             }
         }
         

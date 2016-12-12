@@ -69,6 +69,8 @@ public class TasksManager {
             } else {
                 query += " ASC";
             }
+        } else {
+            query += " order by t.creationDate DESC";
         }
         System.out.println("FIND RANGE GESTIONNAIRE QUERY " + query + " start " + start + " nb " + nb);
         Query q = em.createQuery(query);
