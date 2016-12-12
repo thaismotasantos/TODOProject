@@ -33,6 +33,7 @@
                     </h:form>
                 </p:dialog>
                 
+                
                 <f:view>
                     <h:form>
                         <p:dataTable id="tasksTable" 
@@ -48,16 +49,10 @@
                                      selection="#{tasksMBean.selectedTask}"
                                      selectionMode="single"
                                      editable="true">
-                            <p:ajax event="rowEdit" listener="#{tasksMBean.onEdit}" />
+                            <p:ajax event="rowEdit" listener="#{tasksMBean.onEdit}"/>
                             
                             <p:column style="width:32px;text-align: center">
                                 <p:rowEditor></p:rowEditor>
-                            </p:column>
-                            <p:column sortBy="#{task.id}">
-                                <f:facet name="header">
-                                    <h:outputText value="Id"/>
-                                </f:facet>
-                                <h:outputText value="#{task.id}"/>
                             </p:column>
                             <p:column headerText="Task" sortBy="#{task.name}"  filterBy="#{task.name}" filterMatchMode="contains" >
                                 <p:cellEditor>
@@ -69,50 +64,38 @@
                                     </f:facet>
                                 </p:cellEditor>
                             </p:column>
-                            <p:column headerText="Assigned to" sortBy="#{task.assignedPerson.firstName}" filterBy="#{task.assignedPerson.firstName}" filterMatchMode="contains" >
-                                <p:cellEditor>
-                                    <f:facet name="output">
-                                        <h:outputText value="#{task.assignedPerson.firstName} #{task.assignedPerson.lastName}"/>
-                                    </f:facet>
-                                    <f:facet name="input">
-                                        <p:selectOneMenu value="#{task.assignedPerson}">
-                                            <f:selectItem  itemLabel="NOT ASSIGNED" itemValue="#{null}"/>
-                                            <f:selectItems value="#{peopleMBean.peopleList}" var="person" itemLabel="#{person.firstName} #{person.lastName}" itemValue="#{person}"/>
-                                        </p:selectOneMenu>
-                                    </f:facet>
-                                </p:cellEditor>
-                            </p:column>
                             <p:column headerText="Status" sortBy="#{task.status}">
                                 <p:cellEditor>
                                     <f:facet name="output">
                                         <h:outputText value="#{task.status}"/>
                                     </f:facet>
                                     <f:facet name="input">
-                                        <p:selectOneMenu value="#{task.status}">
+                                        <h:selectOneMenu value="#{task.status}">
                                             <f:selectItems value="#{tasksMBean.status}"/>
-                                        </p:selectOneMenu>
+                                        </h:selectOneMenu>
                                     </f:facet>
                                 </p:cellEditor>
                             </p:column>
-                            <p:column sortBy="#{task.creationDate}">
-                                <f:facet name="header">
-                                    <h:outputText value="CreationDate"/>
-                                </f:facet>
-                                <h:outputText value="#{task.creationDate}">
-                                    <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
-                                </h:outputText>
-                            </p:column>
-                            <p:column>
+                            <p:column headerText="Assigned to" sortBy="#{task.assignedPerson.firstName}" filterBy="#{task.assignedPerson.firstName}" filterMatchMode="contains" >
                                 <p:cellEditor>
                                     <f:facet name="output">
-                                        <h:outputText value="#{task.description}"/>
+                                        <h:outputText value="#{task.assignedPerson.firstName} #{task.assignedPerson.lastName}"/>
                                     </f:facet>
                                     <f:facet name="input">
-                                        <p:inputTextarea value="#{task.description}"/>
+                                        <h:selectOneMenu value="#{task.assignedPersonId}">
+                                            <f:selectItem  itemLabel="NOT ASSIGNED" itemValue="0"/>
+                                            <f:selectItems value="#{peopleMBean.peopleList}" var="person" itemLabel="#{person.firstName} #{person.lastName}" itemValue="#{person.id}"/>
+                                        </h:selectOneMenu>
                                     </f:facet>
                                 </p:cellEditor>
                             </p:column>
+                            
+                            
                             <p:column style="width:70px;text-align: center">
+                                <p:commandButton update="@([id$=taskDetail])" title="Show task details" oncomplete="PF('taskDialog').show()" icon="ui-icon-search"
+                                                 style="display:inline-block">
+                                    <f:setPropertyActionListener value="#{task}" target="#{tasksMBean.selectedTask}" />
+                                </p:commandButton>
                                 <p:commandButton icon="ui-icon-trash" actionListener="#{tasksMBean.deleteTask(task)}"
                                                  update="@([id$=message]) tasksTable">
                                     <p:confirm header="Confirmation" message="Are you sure?" icon="ui-icon-alert" />
@@ -120,13 +103,45 @@
                             </p:column>
                         </p:dataTable>
                         
+                        <p:dialog header="Show task details" widgetVar="taskDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" width="300">
+                            <p:outputPanel id="taskDetail" style="text-align:center;">
+                                <p:outputPanel deferred="true">
+                                    <h3>ID</h3>
+                                    <h:outputText value="#{tasksMBean.selectedTask.id}" />
+                                </p:outputPanel>
+                                <p:outputPanel deferred="true">
+                                    <h3>Creation date</h3>
+                                    <h:outputText value="#{tasksMBean.selectedTask.creationDate}" />
+                                </p:outputPanel>
+                                <p:outputPanel deferred="true">
+                                    <h3>Task</h3>
+                                    <h:outputText value="#{tasksMBean.selectedTask.name}" />
+                                </p:outputPanel>
+                                <p:outputPanel deferred="true">
+                                    <h3>Description</h3>
+                                    <h:outputText value="#{tasksMBean.selectedTask.description}" />
+                                </p:outputPanel>
+                                <p:outputPanel deferred="true">
+                                    <h3>Status</h3>
+                                    <h:outputText value="#{tasksMBean.selectedTask.status}" />
+                                </p:outputPanel>
+                                <p:outputPanel deferred="true">
+                                    <h3>Assigned to</h3>
+                                    <h:outputText value="#{tasksMBean.selectedTask.assignedPerson.firstName} #{tasksMBean.selectedTask.assignedPerson.lastName}" />
+                                </p:outputPanel>
+                            </p:outputPanel>
+                            
+                        </p:dialog>
+                        
                         <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
                             <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
                             <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
                         </p:confirmDialog>
                     </h:form>
+                    
+                    
                 </f:view>
-
+                        
             </ui:define>
 
         </ui:composition>

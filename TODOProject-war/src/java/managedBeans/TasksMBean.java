@@ -5,6 +5,7 @@
  */
 package managedBeans;
 
+import entities.Person;
 import entities.Task;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import managers.PeopleManager;
 import managers.TasksManager;
 import org.primefaces.event.RowEditEvent;
 import org.primefaces.model.LazyDataModel;
@@ -31,13 +33,17 @@ import utils.Status;
 @ViewScoped
 public class TasksMBean implements Serializable {
     @EJB
+    private PeopleManager peopleManager;
+    @EJB
     private TasksManager tasksManager;
+    
     private List<Task> tasksList = new ArrayList();
     private String message;
     private LazyDataModel<Task> tasksModel;
     private Task selectedTask;
     
     private List<Status> status = new ArrayList<Status>(EnumSet.allOf(Status.class));
+    private Person selectedPersonOnEdit;
     /**
      * Creates a new instance of TasksMBean
      */
@@ -58,6 +64,7 @@ public class TasksMBean implements Serializable {
     @PostConstruct
     public void init() {
         this.tasksList = tasksManager.getAllTasks();
+        
     }
 
     public void refreshCache(){
@@ -106,12 +113,21 @@ public class TasksMBean implements Serializable {
     public void setStatus(List<Status> status) {
         this.status = status;
     }
+
+    public Person getSelectedPersonOnEdit() {
+        return selectedPersonOnEdit;
+    }
+
+    public void setSelectedPersonOnEdit(Person selectedPersonOnEdit) {
+        this.selectedPersonOnEdit = selectedPersonOnEdit;
+    }
     
     
     public void onEdit(RowEditEvent event) {
-        
+        System.out.println("je suis dedans");
         try {
-            Task newTask = (Task)event.getObject();
+            Task newTask = (Task) event.getObject();
+//            newTask.setAssignedPersonId(this.selectedPersonOnEdit.getId());
             tasksManager.update(newTask);
         } catch (Exception e) {
             e.printStackTrace();
@@ -139,4 +155,23 @@ public class TasksMBean implements Serializable {
     public String showTasksList() {
         return "index?amp;faces-redirect=true";
     }
+    
+    public List<Person> completePerson(String query) {
+        List<Person> allPeople = peopleManager.getAllPeople();
+        List<Person> filteredPeople = new ArrayList<Person>();
+         
+        for (int i = 0; i < allPeople.size(); i++) {
+            Person t = allPeople.get(i);
+            if(t.getFirstName().toLowerCase().startsWith(query.toLowerCase())) {
+                filteredPeople.add(t);
+            }
+        }
+         
+        return filteredPeople;
+    }
 }
+
+/*
+                                        <p:autoComplete value="#{tasksMBean.selectedPersonOnEdit}" completeMethod="#{tasksMBean.completePerson}"
+                                                        var="person" itemLabel="#{person.firstName}" itemValue="#{person.id}" converter="personConverter" forceSelection="true" />
+*/

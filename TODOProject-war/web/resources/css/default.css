@@ -16,6 +16,18 @@ h1 {
     color: #D20005;
 }
 
+#top {
+    
+}
+
+#left {
+    float: left;
+    width: auto;
+}
+
+#content {
+    
+}
 a:link, a:visited {
   color: #045491;
   font-weight : bold;

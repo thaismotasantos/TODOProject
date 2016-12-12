@@ -110,11 +110,44 @@ public class TasksManager {
     }
     
     public Task update(Task task) {
-        Person newAssignedPerson = task.getAssignedPerson(); //peopleManager.getPersonById(task.getAssignedPerson().getId());
+        System.out.println("Name" + task.getName());
+        System.out.println("Description" + task.getDescription());
+        System.out.println("AssignedPerson" + task.getAssignedPerson());
+        System.out.println("AssignedPersonID" + task.getAssignedPersonId());
         
-        System.out.println("#################################" + newAssignedPerson);
-        newAssignedPerson.addTask(task);
-        //em.merge(newAssignedPerson);
+        
+        
+        //Si la tâche avait une personne assignée
+        if (task.getAssignedPerson() != null) {
+            //Si la personne assignée a changé
+            if (task.getAssignedPerson().getId() == task.getAssignedPersonId()) {
+                Person oldAssignedPerson = task.getAssignedPerson();
+                oldAssignedPerson.removeTask(task);
+                peopleManager.update(oldAssignedPerson);
+            } else {
+                //Ne rien faire
+            }
+        }
+        
+        if (task.getAssignedPersonId() != 0) {
+            Person newAssignedPerson = peopleManager.getPersonById(task.getAssignedPersonId());
+            if (newAssignedPerson != null) {
+                newAssignedPerson.addTask(task);
+                peopleManager.update(newAssignedPerson);
+                
+                task.setAssignedPerson(newAssignedPerson);
+                if (task.getStatus() == Status.NOT_ASSIGNED) {
+                    task.setStatus(Status.IN_PROGRESS);
+                }
+                
+            } else {
+                task.setAssignedPerson(null);
+            }
+        } else {
+            task.setAssignedPerson(null);
+            task.setStatus(Status.NOT_ASSIGNED);
+        }
+        
         
         return em.merge(task);
     }

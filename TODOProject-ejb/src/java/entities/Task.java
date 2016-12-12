@@ -38,7 +38,8 @@ public class Task implements Serializable {
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date creationDate;
     private String description;
-
+    private int assignedPersonId;
+    
     public Task() {
         
     }
@@ -48,6 +49,12 @@ public class Task implements Serializable {
         this.assignedPerson = assignedPerson;
         this.description = description;
         this.creationDate = new Date();
+        if (assignedPerson == null) {
+            this.assignedPersonId = 0;
+        } else {
+            this.assignedPersonId =  assignedPerson.getId();
+        }
+        
     }
     
     public int getId() {
@@ -96,6 +103,14 @@ public class Task implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public int getAssignedPersonId() {
+        return assignedPersonId;
+    }
+
+    public void setAssignedPersonId(int assignedPersonId) {
+        this.assignedPersonId = assignedPersonId;
     }
     
     @Override
