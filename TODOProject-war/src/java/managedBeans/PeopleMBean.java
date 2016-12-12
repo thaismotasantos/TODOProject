@@ -81,6 +81,17 @@ public class PeopleMBean implements Serializable {
         refreshCache();
         
         return "index?faces-redirect=true";
+    }   
+    
+    public void resetInputsAdd() {
+        this.newPersonFirstName = null;
+        this.newPersonLastName = null;
+        updateAvailableTasks();;
+    }
+    
+    public void updateSelectedPerson(SelectEvent event) {
+        System.out.println("entrou aqui UPDATE SELECTED PERSON");
+        selectedPerson = (Person)event.getObject();
     }
     
     public void updateAvailableTasks(SelectEvent event) {

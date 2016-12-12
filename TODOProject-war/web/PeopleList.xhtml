@@ -20,6 +20,7 @@
                         <p:dialog header="Add person" widgetVar="addDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
                             <p:outputPanel id="addPerson" style="text-align:center;">
                                 <h:form id="addDialogForm">
+                        <p:panel id="panel" style="margin-bottom:10px;">
                                     <h:panelGrid columns="4">
                                         <h:outputLabel value="First name:" for="firstName" />
                                         <p:inputText id="firstName" value="#{peopleMBean.newPersonFirstName}" title="First name" required="true" requiredMessage="The first name field is required."/>
@@ -34,7 +35,10 @@
                                         <f:facet name="targetCaption">Selected</f:facet>
                                     </p:pickList>
                                     <br></br>
-                                    <p:commandButton value="Save" actionListener="#{peopleMBean.addPerson}" onclick="PF('addDialog').hide()" update="@([id$=message]) @([id$=peopleTable])" />
+                            </p:panel>
+                                    <p:commandButton value="Save" actionListener="#{peopleMBean.addPerson}" onclick="PF('addDialog').hide()" update="@([id$=message]) @([id$=peopleTable])">
+                                        <p:ajax update="panel" resetValues="true" />
+                                    </p:commandButton>
                                 </h:form>
                             </p:outputPanel>
                         </p:dialog>
@@ -120,16 +124,6 @@
                         
                         <p:dialog header="Assigned tasks" widgetVar="personDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
                             <p:outputPanel id="personDetail" style="text-align:center;">
-                                <p:panelGrid  columns="2" rendered="#{not empty peopleMBean.selectedPerson}" columnClasses="label,value">
-                                    <f:facet name="header">
-                                    </f:facet>
-                                    <h:outputText value="Id:" />
-                                    <h:outputText value="#{peopleMBean.selectedPerson.id}" />
-                                    <h:outputText value="First name" />
-                                    <h:outputText value="#{peopleMBean.selectedPerson.firstName}" />
-                                    <h:outputText value="Last name:" />
-                                    <h:outputText value="#{peopleMBean.selectedPerson.lastName}"/>
-                                </p:panelGrid>
                                 <h:form>
                                     <p:accordionPanel value="#{peopleMBean.selectedPerson.tasksList}" var="task" style="width:1000px">
                                         <p:tab title="#{task.name}">
